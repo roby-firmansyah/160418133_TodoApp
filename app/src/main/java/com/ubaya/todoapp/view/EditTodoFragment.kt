@@ -38,7 +38,6 @@ class EditTodoFragment : Fragment() {
             viewModel.update(txtTitle.text.toString(), txtNotes.text.toString(), radio.tag.toString().toInt(), uuid)
             Toast.makeText(view.context, "Toast updated", Toast.LENGTH_SHORT).show()
         }
-
         observerViewModel()
     }
 

@@ -15,9 +15,14 @@ import kotlin.coroutines.CoroutineContext
 
 class ListTodoViewModel(aplication: Application):AndroidViewModel(aplication), CoroutineScope {
     val todoLD = MutableLiveData<List<Todo>>()
+    val todoLoadErrorLD = MutableLiveData<Boolean>()
+    val loadingLD = MutableLiveData<Boolean>()
     private var job = Job()
 
+
     fun refresh() {
+        loadingLD.value = true
+        todoLoadErrorLD.value = false
         launch {
             val db = buildDB(getApplication())
             todoLD.value = db.todoDao().selectAllTodo()
@@ -27,7 +32,7 @@ class ListTodoViewModel(aplication: Application):AndroidViewModel(aplication), C
     fun clearTask(todo:Todo) {
         launch {
             val db = buildDB(getApplication())
-            db.todoDao().deleteTodo(todo)
+            db.todoDao().checked(1, todo.uuid)
             todoLD.value = db.todoDao().selectAllTodo()
         }
     }
